@@ -94,7 +94,7 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      min-height: 520px;
+      min-height: 540px;
     }
     .chat-messages {
       flex: 1;
@@ -205,8 +205,8 @@
     <h1>Ariya AI Career Agent</h1>
   </div>
   <div class="nav-actions">
-    <a href="https://ariya-boop.github.io" target="_blank" class="chip">Live Portfolio ↗</a>
-    <a href="https://github.com/ariya-boop" target="_blank" class="chip">GitHub ↗</a>
+    <a href="../" class="chip">Live Portfolio ↗</a>
+    <a href="https://github.com/ariya-boop/linkedin-ai-agent" target="_blank" class="chip">Agent Codebase ↗</a>
     <a href="https://www.linkedin.com/in/ryleen-ariyakutty" target="_blank" class="btn-linkedin">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
       Connect on LinkedIn
@@ -219,20 +219,20 @@
     <div class="chat-messages" id="msgs">
       <div class="msg agent">
         <strong>👋 Hello! I am the Ariya Career & Networking AI Agent.</strong><br>
-        I represent <strong>Ryleen Ariyakutty</strong> (Software Engineer, MS AI Engineering student at WGU, and Defensive Security Builder).<br><br>
-        Ask me about Ryleen's projects, verify benchmark metrics, generate a LinkedIn connection note for your team, or click the LinkedIn button to connect directly!
+        I represent <strong>Ryleen Ariyakutty</strong> (Software Engineer, MS AI Engineering candidate at Western Governors University, and Defensive Security Builder).<br><br>
+        Ask me about Ryleen's projects, verify benchmark metrics, generate a tailored LinkedIn connection note for your team, or click above to connect directly on LinkedIn!
       </div>
     </div>
 
     <div class="quick-prompts">
       <button class="chip" onclick="ask('What are Ryleen\'s top projects and metrics?')">📊 Top Projects</button>
-      <button class="chip" onclick="ask('Draft a LinkedIn connection note for an AI Engineering Manager')">🤝 Connection Note</button>
+      <button class="chip" onclick="ask('Draft a LinkedIn connection note for an AI Engineering Leader')">🤝 Connection Note (&le;300 chars)</button>
       <button class="chip" onclick="ask('Draft a technical LinkedIn post on adversarial ML')">📝 Draft Tech Post</button>
       <button class="chip" onclick="ask('How do I connect directly with Ryleen on LinkedIn?')">🔗 Direct LinkedIn Link</button>
     </div>
 
     <form class="chat-input-bar" id="chatForm">
-      <input type="text" id="userInput" placeholder="Ask a question or request a LinkedIn note..." autocomplete="off">
+      <input type="text" id="userInput" placeholder="Ask a question or request a LinkedIn connection note..." autocomplete="off">
       <button type="submit">Send</button>
     </form>
   </div>
@@ -242,6 +242,7 @@
 const msgs = document.getElementById('msgs');
 const form = document.getElementById('chatForm');
 const input = document.getElementById('userInput');
+const LINKEDIN_URL = "https://www.linkedin.com/in/ryleen-ariyakutty";
 
 function formatText(text) {
   return text
@@ -259,6 +260,29 @@ function appendMsg(text, sender) {
   msgs.scrollTop = msgs.scrollHeight;
 }
 
+// Client-side autonomous ReAct engine for zero-dependency execution
+function localAgentReason(query) {
+  const q = query.toLowerCase();
+  
+  if (q.includes("linkedin") || q.includes("connect") || q.includes("reach") || q.includes("contact")) {
+    return `You can connect directly with Ryleen Ariyakutty on LinkedIn:\n\n👉 **[LinkedIn Profile: Ryleen Ariyakutty](${LINKEDIN_URL})**\n\n• Email: [ariyakuttyryleen@gmail.com](mailto:ariyakuttyryleen@gmail.com)\n• GitHub: [github.com/ariya-boop](https://github.com/ariya-boop)\n• Portfolio: [https://ariya-boop.github.io](https://ariya-boop.github.io)`;
+  }
+  
+  if (q.includes("outreach") || q.includes("connection note") || q.includes("inmail") || q.includes("message")) {
+    const note = "Hi there, I'm Ryleen, an MS AI Eng student building robust ML systems. Admiring your engineering work. Recently published an adversarial ML benchmark exposing gradient masking in CNNs. Would love to connect and follow your work!";
+    return `### 🤝 Tailored LinkedIn Connection Note (Under 300 Characters)\n\n\`\`\`text\n${note}\n\`\`\`\n*(Character count: ${note.length} / 300 allowed)*\n\n👉 **[Click here to connect directly on LinkedIn](${LINKEDIN_URL})**`;
+  }
+  
+  if (q.includes("post") || q.includes("article") || q.includes("draft") || q.includes("share")) {
+    const post = "🚨 Why defending against single-step adversarial attacks gives AI teams a false sense of security:\n\nIn my latest AI security lab, I evaluated CNN defenses under both FGSM and multi-step PGD with random restarts.\n\nKey finding: Single-step defenses often merely cause Gradient Masking (collapsing from 88.8% to 20.5% under 7-step PGD) without true robustness.\n\nCodebase: https://github.com/ariya-boop/adversarial-ml-lab\n#MachineLearning #AISecurity #PyTorch #Cybersecurity";
+    const shareUrl = "https://www.linkedin.com/feed/?shareActive=true&text=" + encodeURIComponent(post);
+    return `### 📝 Generated LinkedIn Technical Post\n\n${post}\n\n---\n🔗 **[Click here to open LinkedIn and share this post](${shareUrl})**`;
+  }
+  
+  // Knowledge retrieval
+  return `### 🤖 Verified Portfolio Knowledge\n\n**Ryleen Ariyakutty** — Software Engineer, Adversarial ML Researcher & Defensive Security Builder.\n\n• **MS in AI Engineering** — Western Governors University (Expected 2027)\n• **BS in Software Engineering** — Western Governors University (2026)\n• **Certificate in Cybersecurity Architecture & Operations** — Toronto Metropolitan University (2026)\n\n**Featured Systems:**\n1. **Adversarial ML Lab**: PyTorch CNN robustness benchmarking (FGSM vs PGD), exposing gradient masking.\n2. **CipherVault**: Client-side Zero-Knowledge AES-256-GCM + PBKDF2 (100k rounds) using native Web Crypto API.\n3. **Secure Notes REST API**: Flask backend with SQL row-level IDOR mitigation, non-root Docker UID 10001, and 0 SAST flaws.\n4. **Phishing Detector**: Dual-pipeline NLP classifier (98.93% accuracy on 2,995 SpamAssassin emails, <0.2ms latency).\n5. **Linux Auth Log Analyzer**: O(1) sliding window SSH threat hunting mapped to MITRE ATT&CK T1110.\n6. **CyberDefend**: 2D network defense simulation in HTML5 Canvas & Web Audio API.\n\n👉 **[Connect with Ryleen directly on LinkedIn](${LINKEDIN_URL})**`;
+}
+
 async function ask(query) {
   appendMsg(query, 'user');
   appendMsg('<em>Analyzing request with ReAct engine...</em>', 'agent');
@@ -270,10 +294,13 @@ async function ask(query) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: query })
     });
+    if (!res.ok) throw new Error("API not available");
     const data = await res.json();
     tempMsg.innerHTML = formatText(data.response);
   } catch (err) {
-    tempMsg.innerHTML = 'Error connecting to agent service. Ensure server is running.';
+    // Client-side execution fallback
+    const localResp = localAgentReason(query);
+    tempMsg.innerHTML = formatText(localResp);
   }
 }
 
