@@ -1,4 +1,4 @@
-# Ariya AI Agent | LinkedIn & Career Intelligence
+# AI Agent
 
 An autonomous, tool-calling AI agent designed to bridge software engineering portfolios, technical research, and professional networking on **LinkedIn**.
 
